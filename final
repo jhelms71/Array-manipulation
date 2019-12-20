@@ -1,0 +1,167 @@
+/*
+ * @author Jonathan Helms
+ * @version 12/4/2019
+ * @lab section 006
+ * 
+ * description: program allows user to create a list that they choice the length, they then use different option to manipulate/create that list
+ * 
+ * pseudocode:
+ * 1.Ask user to enter a length of array
+ * 2. create a new array at the length entered
+ * 3. Use fillArray method to add value from -100 to 100 to the array
+ * 		fillArray
+ * 		-accepts the array created as parameter
+ * 		-fills in each value with -100 to 100 with Math.random
+ * 3. display a menu with the options Search, Shuffle, Initialize, Display and Quit
+ * 4. Search Array
+ * 		-User enters a number to search for
+ * 		-binarySearch is used to look for the index of number
+ * 		-if found, index is give, otherwise -1 is displayed
+ * 5. Shuffle Array
+ * 		-Tell user they are shuffling array
+ * 		-use shuffleArray method to shuffle
+ * 			~create nested loop, that first one runs 100 times
+ * 			~create temp value to hold each index of a number and swap with random index
+ * 6. Initialize Array
+ * 		-User enters new length for new array
+ * 		-initialize method is used to replace old array
+ * 			~accepts the length as a parameter
+ * 			~creates new array at given length
+ * 			~uses fillArray to fill in the numbers
+ * 7. Display Array
+ * 		-Use the display method to loop through each index of the array
+ * 		-output each with spaces inbetween
+ * 8. Quit
+ * 		-Display message letting user know program has ended
+ * 9. Tell user to choice one of the choices
+ * 
+ */
+
+import java.util.*;
+public class Lab_Test_3 {
+
+	public static void main(String[] args) {
+		//create scanner and boolean to run while loop
+		Scanner input = new Scanner(System.in);
+		boolean program = true;
+		
+		//ask for length and place in an array
+		System.out.print("Enter a length for the array: ");
+		int numb = input.nextInt();
+		
+		int random100[] = new int[numb];
+		
+		//fill method to give array values between -100 and 100
+		fillArray(random100);
+		
+		displayArray(random100);
+
+		
+		//do while to show menu at least once and display message and user choices
+		do {
+			System.out.println("\nChoose one of the following"
+					+ "\n\t1. Search Array"
+					+ "\n\t2. Shuffle Array"
+					+ "\n\t3. Initialize Array"
+					+ "\n\t4. Display Array"
+					+ "\n\t5. Quit");
+			int choice = input.nextInt();
+			
+			
+			if(choice == 1) {//user enters number to search 
+				System.out.println("Enter a number to search for: ");
+				int search = input.nextInt();
+				
+				//array and number are used to see if the number is in the index, if not -1 is displayed
+				System.out.println(binarySearch(random100, search));
+				
+			}
+			else if (choice == 2) {//array is shuffled
+				System.out.println("Your array is now shuffling.");
+				//use shuffle method to loop through numbers
+				shuffle(random100);
+				System.out.println("Your array has been shuffled.");
+				
+			}
+			else if (choice == 3) {
+				//create new array at length user choices
+				System.out.println("Enter a new length for a new array: ");
+				int leng = input.nextInt();
+				
+				//use initialize to create the array and place back into the original
+				random100 = initialize(leng);
+				
+			}
+			else if (choice == 4) {
+				//display the array
+				System.out.println("This is the current configuration of the array is: ");
+				//display loops through each index with spaces
+				displayArray(random100);
+				
+			}
+			else if (choice == 5) {//while loop ends
+				System.out.println("Goodbye.");
+				program = false;
+			}
+			else {
+				System.out.println("Please choice one of the options given.");
+			}
+			
+		}while(program);
+		
+	}
+	public static void fillArray(int []array){//adds values to array
+		for (int i = 0; i < array.length; i++) {//loops through each index and give value 100 to -100
+			array[i] = (int)(Math.random()*(100+100+1)-100);
+		}
+		
+	}
+	public static int binarySearch(int [] list, int key){
+		int low = 0;
+		int high = list.length - 1;
+		
+		//loop as long as high is larger than low
+		while (high >= low) { // compare high, low and mid
+			int mid = (low + high) / 2;
+			if(key < list[mid]) {
+				high = mid - 1;
+			}
+			//once key is found, display this
+			else if (key == list[mid]) {
+				return mid;
+				//break;
+				
+			}
+			else {
+				low = mid+1;
+			}
+			
+		}
+		return -1;
+	}
+	public static void shuffle(int [] array) {//shuffle array
+		for(int i = 100; i > 0; i--) {//nested loop first 100 times to shuffle then the length making sure each index changes
+			for(int j = 0; j < array.length; j++) {
+				int random = (int)(Math.random()*array.length); //create a random index number
+				int temp = array[j];//hold original in temp
+				array[j] = array[random];
+				array[random] = temp;
+			}
+		}	
+		
+	}
+	public static int[] initialize(int leng) {
+		int array[] = new int[leng];//create new array and fill with fillArray
+		fillArray(array);
+		return array;
+		
+		
+		
+	}
+	public static void displayArray(int[] array) {
+		for (int i = 0; i < array.length;i++) {//loop through each index and display each number with a space
+			System.out.print(array[i] + " ");
+		}
+	}
+
+}
